@@ -12,3 +12,4 @@
 8. SOC Monitoring Dashboard
 9. Real-time Alert Configuration
 10. Triggered Alert
+11. sysmon operational logs

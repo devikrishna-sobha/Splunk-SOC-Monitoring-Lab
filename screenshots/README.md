@@ -13,3 +13,4 @@
 9. Real-time Alert Configuration
 10. Triggered Alert
 11. sysmon operational logs
+12. sysmon events in splunk

@@ -87,9 +87,6 @@ Detects multiple Windows failed logon events that may indicate a brute-force att
 - Event ID Monitoring
 - Dashboard Creation
 - Alert Configuration
-
-### Upcoming Enhancements
-
 - Sysmon Integration
 - Process Creation Monitoring
 - PowerShell Detection

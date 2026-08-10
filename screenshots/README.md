@@ -15,3 +15,4 @@
 11. sysmon operational logs
 12. sysmon events in splunk
 13. sysmon event id 1 process creation
+14. powershell detection.png

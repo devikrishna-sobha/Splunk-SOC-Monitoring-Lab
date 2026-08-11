@@ -1,59 +1,53 @@
-# Splunk Search Queries
+# Splunk SOC Detection Queries
 
-## 1. Successful Logins
+## 1. Sysmon Event ID 1 – Process Creation
+
+```spl
+index=default sourcetype="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode=1
+| table _time Computer User Image CommandLine ParentImage
+```
+
+## 2. PowerShell Activity
+
+```spl
+index=default sourcetype="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode=1
+| search Image="*powershell*" OR CommandLine="*PowerShell*"
+| stats count
+```
+
+## 3. Successful Login – Event ID 4624
+
 ```spl
 index=* EventCode=4624
+| table _time host TargetUserName IpAddress LogonType
 ```
-Purpose:
-- Detect successful Windows logins.
 
----
+## 4. Failed Login – Event ID 4625
 
-## 2. Failed Login Attempts
 ```spl
 index=* EventCode=4625
+| stats count by IpAddress TargetUserName
+| sort - count
 ```
-Purpose:
-- Detect failed login attempts and possible brute-force attacks.
 
----
+## 5. User Added to Security Group – Event ID 4732
 
-## 3. New User Account Created
-```spl
-index=* EventCode=4720
-```
-Purpose:
-- Detect creation of new Windows user accounts.
-
----
-
-## 4. User Added to Security Group
 ```spl
 index=* EventCode=4732
 | table _time host SubjectUserName MemberName GroupName
-Purpose:
-Detect users added to privileged groups.
 ```
 
-## 5. Sysmon Process Creation
+## 6. Total Sysmon Events
+
+```spl
+index=default sourcetype="WinEventLog:Microsoft-Windows-Sysmon/Operational"
+| stats count
+```
+
+## 7. Top Process Executions
 
 ```spl
 index=default sourcetype="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode=1
-| table _time Computer User Image CommandLine ParentImage
-
-Purpose:
-
-Detect newly created processes.
-Identify the process executable and command line.
-Identify the parent process responsible for launching it.
-
-## 6. PowerShell Process Detection
-index=default sourcetype="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode=1
-| search CommandLine="*powershell*"
-| table _time Computer User Image CommandLine ParentImage
-
-Purpose:
-
-Detect PowerShell process execution.
-Investigate the PowerShell command line.
-Identify the user and parent process associated with PowerShell activity.
+| stats count by Image
+| sort - count
+```

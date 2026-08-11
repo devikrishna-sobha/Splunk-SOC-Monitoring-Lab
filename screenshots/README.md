@@ -18,3 +18,4 @@
 14. powershell detection
 15. sysmon sourcetype verified
 16. process creation panel
+17. powershell activity panel
